@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Mara",
-  description: "Mara",
+  title: "City of Mara | Avenue & Forum, Timișoara",
+  description: "Discover available apartments at City of Mara Avenue and Forum in central Timișoara.",
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",
