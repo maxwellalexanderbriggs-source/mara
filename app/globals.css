@@ -167,6 +167,7 @@ footer p { margin: 0 0 8px; color: white; text-transform: uppercase; letter-spac
   .location-section, .about-section { grid-template-columns: 1fr 1fr; }
   .amenities-section { grid-template-columns: 1fr; gap: 70px; }
   .menu-overlay { grid-template-columns: .65fr 1fr; gap: 5vw; }
+  .book-visit, .scroll-cue { display: none; }
 }
 
 @media (max-width: 700px) {
