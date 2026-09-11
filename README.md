@@ -1,6 +1,15 @@
 # Mara
 
-A production-ready, motion-led website foundation built with Next.js, React, TypeScript, Tailwind CSS, and Vinext for Cloudflare-compatible deployment.
+A blank, production-ready foundation for building a modern website.
+
+## Included
+
+- Next.js and React
+- TypeScript
+- Tailwind CSS
+- Reusable interface components
+- Cloudflare-compatible Vinext build configuration
+- Empty home page with no imposed design or content
 
 ## Start locally
 
@@ -9,27 +18,13 @@ npm install
 npm run dev
 ```
 
-Before shipping changes, run `npm run typecheck` and `npm run build`.
+## Validate changes
 
-## Media
-
-- Put images, posters, and videos in `public/media/`.
-- Use WebP or AVIF for photography and SVG for simple graphic assets.
-- Use MP4 (H.264) plus WebM when broad, efficient video delivery matters.
-- Always provide a poster for video and keep autoplay media muted and `playsInline`.
-- `MediaFrame` accepts either an image or video and reserves its aspect ratio to prevent layout shift.
-
-## Motion
-
-The page uses CSS-first motion and a small pointer-parallax layer. Animation automatically collapses when a visitor enables **Reduce Motion**. Keep decorative movement on `transform` and `opacity` for smooth rendering.
-
-## Structure
-
-```text
-app/                  Routes, metadata, and global visual system
-components/           Reusable motion and media components
-public/media/          Optimized images, video, and poster assets
-.openai/hosting.json   Sites deployment configuration
+```bash
+npm run typecheck
+npm run build
 ```
 
-Local secrets belong in `.env.local`, which is ignored by Git. Never commit credentials.
+Build the site from `app/page.tsx`. Shared styling belongs in `app/globals.css`, reusable elements belong in `components/`, and future images or videos can be placed in `public/`.
+
+Store local secrets in `.env.local`. Environment files are ignored by Git and credentials should never be committed.
