@@ -51,6 +51,7 @@ const metricSuffixes = ["+", "", "+", ""];
 export default function Home() {
   const [locale, setLocale] = useState<Locale>("EN");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [menuClosing, setMenuClosing] = useState(false);
   const [menuImage, setMenuImage] = useState("/COMfullrender.webp");
   const [bookingDone, setBookingDone] = useState(false);
   const heroRef = useRef<HTMLElement>(null);
@@ -83,38 +84,27 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (!window.matchMedia("(pointer: fine)").matches || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    let target = window.scrollY, current = target, frame = 0;
-    const animate = () => {
-      current += (target - current) * 0.115;
-      window.scrollTo(0, current);
-      if (Math.abs(target - current) > 0.45) frame = requestAnimationFrame(animate);
-      else { window.scrollTo(0, target); current = target; frame = 0; }
-    };
-    const onWheel = (event: WheelEvent) => {
-      if (event.ctrlKey || (event.target as HTMLElement)?.closest("[role='dialog'], input, select, textarea")) return;
-      event.preventDefault();
-      target = Math.max(0, Math.min(document.documentElement.scrollHeight - window.innerHeight, target + event.deltaY * 0.82));
-      if (!frame) { current = window.scrollY; frame = requestAnimationFrame(animate); }
-    };
-    const sync = () => { if (!frame) target = current = window.scrollY; };
-    window.addEventListener("wheel", onWheel, { passive: false }); window.addEventListener("scroll", sync, { passive: true });
-    return () => { window.removeEventListener("wheel", onWheel); window.removeEventListener("scroll", sync); cancelAnimationFrame(frame); };
-  }, []);
-
-  useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
-    const onKey = (event: KeyboardEvent) => { if (event.key === "Escape") setMenuOpen(false); };
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && menuOpen && !menuClosing) {
+        setMenuClosing(true);
+        window.setTimeout(() => { setMenuOpen(false); setMenuClosing(false); }, 700);
+      }
+    };
     window.addEventListener("keydown", onKey);
     return () => { document.body.style.overflow = ""; window.removeEventListener("keydown", onKey); };
-  }, [menuOpen]);
+  }, [menuOpen, menuClosing]);
 
   const handleBooking = (event: FormEvent<HTMLFormElement>) => { event.preventDefault(); setBookingDone(true); };
-  const closeMenu = () => setMenuOpen(false);
+  const closeMenu = () => {
+    if (menuClosing) return;
+    setMenuClosing(true);
+    window.setTimeout(() => { setMenuOpen(false); setMenuClosing(false); }, 700);
+  };
 
   return <main id="top">
     <header className="site-header">
-      <button className="menu-trigger" onClick={() => setMenuOpen(true)} aria-expanded={menuOpen} aria-controls="site-menu"><span className="menu-lines" aria-hidden="true" /> {copy.menu}</button>
+      <button className="menu-trigger" onClick={() => { setMenuClosing(false); setMenuOpen(true); }} aria-expanded={menuOpen} aria-controls="site-menu"><span className="menu-lines" aria-hidden="true" /> {copy.menu}</button>
       <a href="#top" aria-label="City of Mara home"><img className="brand-mark" src="/COMlogogeneral.webp" alt="" /></a>
       <nav className="header-actions" aria-label="Language and contact"><LanguageSwitch locale={locale} onChange={setLocale} /><LuxuryLink href={apartmentHref} label={copy.find} className="header-cta" /></nav>
     </header>
@@ -123,7 +113,6 @@ export default function Home() {
       <video ref={videoRef} className="hero-video" muted playsInline preload="metadata" poster="/COMconversationrender.webp" aria-hidden="true"><source src="/frame_0001-0241.mp4" type="video/mp4" /></video><div className="hero-veil" />
       <div className="hero-copy"><p className="eyebrow">{copy.eyebrow}</p><h1 id="hero-title">{copy.titleA}<br /><em>{copy.titleB}</em></h1><p className="hero-intro">{copy.intro}</p></div>
       <BookingDialog done={bookingDone} onDone={handleBooking} onReset={() => setBookingDone(false)} triggerClass="book-visit" label={copy.visit} />
-      <div className="scroll-cue"><span>{copy.scroll}</span><i /></div>
     </div></section>
 
     <section className="intro-proof section-pad" aria-labelledby="intro-title"><div className="intro-grid"><p className="eyebrow dark">{copy.storyEyebrow}</p><h2 id="intro-title">{copy.storyTitle}</h2><p className="lead-copy">{copy.storyBody}</p></div><div className="proof-grid">{metricValues.map((value, index) => <Metric key={value} value={value} suffix={metricSuffixes[index]} label={copy.metrics[index]} />)}</div></section>
@@ -143,7 +132,7 @@ export default function Home() {
 
     <aside className="contact-dock" aria-label="Quick contact"><a href="tel:+40725890799"><Phone size={17} /><span>{copy.call}</span></a><a href="https://wa.me/40725890799"><MessageCircle size={17} /><span>WhatsApp</span></a><BookingDialog done={bookingDone} onDone={handleBooking} onReset={() => setBookingDone(false)} compact label={copy.book} /></aside>
 
-    {menuOpen && <div id="site-menu" className="menu-overlay" role="dialog" aria-modal="true" aria-label="Main navigation">
+    {menuOpen && <div id="site-menu" className={`menu-overlay${menuClosing ? " is-closing" : ""}`} role="dialog" aria-modal="true" aria-label="Main navigation">
       <button className="menu-trigger close" onClick={closeMenu}><X size={25} /> {copy.menu}</button><img className="overlay-logo" src="/COMlogogeneral.webp" alt="City of Mara" /><BookingDialog done={bookingDone} onDone={handleBooking} onReset={() => setBookingDone(false)} triggerClass="overlay-inquire" label={copy.visit} />
       <div className="menu-image"><img key={menuImage} src={menuImage} alt="" /></div><nav><a href="#top" onMouseEnter={() => setMenuImage("/COMfullrender.webp")} onClick={closeMenu}><span>01</span>{copy.home}</a><MenuGroup number="02" label="Avenue" image="/COMsitephoto.webp" onImage={setMenuImage} projectLabel={copy.project} apartmentsLabel={copy.apartments} projectHref="#avenue" apartmentsHref={apartmentHref} onNavigate={closeMenu} /><MenuGroup number="03" label="Forum" image="/COMgardenrender.webp" onImage={setMenuImage} projectLabel={copy.project} apartmentsLabel={copy.apartments} projectHref="#forum" apartmentsHref={apartmentHref} onNavigate={closeMenu} /><a href="#about" onMouseEnter={() => setMenuImage("/COMconversationrender.webp")} onClick={closeMenu}><span>04</span>{copy.about}</a><a href="#footer" onMouseEnter={() => setMenuImage("/COMsite.webp")} onClick={closeMenu}><span>05</span>{copy.contact}</a></nav>
       <div className="menu-bottom"><LanguageSwitch locale={locale} onChange={setLocale} overlay /><a href="tel:+40371236806">0371 236 806</a><span>Timișoara · Romania</span></div>
