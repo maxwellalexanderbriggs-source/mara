@@ -1,0 +1,5 @@
+import Link from "next/link";
+
+export default function SiteFooter() {
+  return <footer id="footer" className="grand-footer"><div className="grand-footer-main"><Link href="/" className="grand-footer-mark"><span>CITY</span><em>of</em><span>MARA</span></Link><div className="grand-footer-directory"><div><Link href="/avenue">Avenue</Link><Link href="/forum">Forum</Link><Link href="/avenue/location">Avenue Location</Link><Link href="/forum/location">Forum Location</Link><a href="https://www.cityofmara.ro/en/proiect-interactiv_/">Availability</a><Link href="/about">About</Link></div><div><Link href="/about">Team</Link><Link href="/contact">Contact</Link><a href="https://www.instagram.com/cityofmara/">Instagram</a></div><div className="grand-footer-contact"><a href="tel:+40725890799">+40 725 890 799</a><a href="mailto:sales@cityofmara.ro">sales@cityofmara.ro</a></div></div></div><div className="grand-footer-bottom"><span>Copyright © City of Mara 2026</span><Link href="/about">Built for Timișoara</Link><a href="#top">Back to top ↑</a></div></footer>;
+}

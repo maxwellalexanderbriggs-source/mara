@@ -3,6 +3,7 @@
 import { FormEvent, ReactNode, useEffect, useRef, useState } from "react";
 import { ArrowRight, CalendarDays, Check, ChevronDown, MessageCircle, Phone, Plus, X } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import SiteFooter from "@/components/site-footer";
 
 type Locale = "EN" | "RO";
 
@@ -14,16 +15,16 @@ const translations = {
     storyBody: "City of Mara brings considered homes, useful services and generous green space together in two central Timișoara communities.",
     metrics: ["years shaping City of Mara", "homes across the collection", "everyday destinations", "distinct neighbourhoods"],
     locationEyebrow: "Connected by design", locationTitle: "Close to the centre. Closer to everything you need.",
-    locationBody: "Work, culture, education and the daily essentials are all within easy reach—so more of the day belongs to you.",
+    locationBody: "Work, culture, education and the daily essentials are all within easy reach, so more of the day belongs to you.",
     amenitiesEyebrow: "Life, already in place", amenitiesTitle: "A neighbourhood that works before you leave home.",
-    amenitiesBody: "Gardens, cafés, fitness, retail and secure parking form a complete rhythm of daily life—not a list of afterthoughts.",
+    amenitiesBody: "Gardens, cafés, fitness, retail and secure parking form a complete rhythm of daily life, not a list of afterthoughts.",
     amenityItems: ["Landscaped green space", "Retail & cafés", "Fitness & wellbeing", "Secure parking"],
     projectsEyebrow: "Two ways to live", projectsTitle: "Choose your City of Mara.",
     avenueLabel: "Established · Connected · Ready", avenueTitle: "Everything that matters, already around you.",
     forumLabel: "New · Mixed-use · In progress", forumTitle: "A new urban destination taking shape.",
     project: "The project", apartments: "Apartments", aboutEyebrow: "The organisation",
-    aboutTitle: "Locally rooted. Built for the long term.", aboutBody: "We create enduring places, not isolated buildings—balancing design, function and community at every scale.",
-    aboutLink: "About City of Mara", home: "Home", about: "About us", contact: "Contact", call: "Call", book: "Book",
+    aboutTitle: "Locally rooted. Built for the long term.", aboutBody: "We create enduring places, not isolated buildings, balancing design, function and community at every scale.",
+    aboutLink: "About City of Mara", home: "Home", about: "About us", contact: "Contact", location: "Location", call: "Call", book: "Book",
   },
   RO: {
     menu: "Meniu", find: "Caută apartament", visit: "Programează o vizită", eyebrow: "Timișoara · Avenue & Forum",
@@ -32,7 +33,7 @@ const translations = {
     storyBody: "City of Mara reunește locuințe atent gândite, servicii utile și spații verzi generoase în două comunități centrale din Timișoara.",
     metrics: ["ani de City of Mara", "locuințe în întreaga colecție", "destinații pentru fiecare zi", "cartiere distincte"],
     locationEyebrow: "Conectat prin design", locationTitle: "Aproape de centru. Și mai aproape de tot ce contează.",
-    locationBody: "Serviciul, cultura, educația și lucrurile esențiale sunt ușor accesibile—pentru ca timpul să rămână al tău.",
+    locationBody: "Serviciul, cultura, educația și lucrurile esențiale sunt ușor accesibile, pentru ca timpul să rămână al tău.",
     amenitiesEyebrow: "Viața, deja aici", amenitiesTitle: "Un cartier care funcționează înainte să pleci de acasă.",
     amenitiesBody: "Grădinile, cafenelele, fitnessul, magazinele și parcarea securizată creează ritmul complet al vieții cotidiene.",
     amenityItems: ["Spații verzi amenajate", "Magazine și cafenele", "Fitness și wellbeing", "Parcare securizată"],
@@ -40,8 +41,8 @@ const translations = {
     avenueLabel: "Matur · Conectat · Pregătit", avenueTitle: "Tot ce contează este deja în jurul tău.",
     forumLabel: "Nou · Mixt · În dezvoltare", forumTitle: "O nouă destinație urbană prinde contur.",
     project: "Proiectul", apartments: "Apartamente", aboutEyebrow: "Organizația",
-    aboutTitle: "Rădăcini locale. Construit pentru viitor.", aboutBody: "Creăm locuri durabile, nu clădiri izolate—echilibrând designul, funcționalitatea și comunitatea la fiecare scară.",
-    aboutLink: "Despre City of Mara", home: "Acasă", about: "Despre noi", contact: "Contact", call: "Sună", book: "Vizită",
+    aboutTitle: "Rădăcini locale. Construit pentru viitor.", aboutBody: "Creăm locuri durabile, nu clădiri izolate, echilibrând designul, funcționalitatea și comunitatea la fiecare scară.",
+    aboutLink: "Despre City of Mara", home: "Acasă", about: "Despre noi", contact: "Contact", location: "Locație", call: "Sună", book: "Vizită",
   },
 };
 
@@ -116,7 +117,7 @@ export default function Home() {
     </header>
 
     <section ref={heroRef} className="hero-scroll" aria-labelledby="hero-title"><div className="hero-stage">
-      <video ref={videoRef} className="hero-video" muted playsInline preload="auto" poster="/COMconversationrender.webp" aria-hidden="true"><source src="/frame_0001-0241.mp4" type="video/mp4" /></video><div className="hero-veil" />
+      <div className="hero-video-frame" data-parallax><video ref={videoRef} className="hero-video" muted playsInline preload="auto" poster="/COMconversationrender.webp" aria-hidden="true"><source src="/frame_0001-0241.mp4" type="video/mp4" /></video></div><div className="hero-veil" />
       <div className="hero-copy"><p className="eyebrow">{copy.eyebrow}</p><h1 id="hero-title">{copy.titleA}<br /><em>{copy.titleB}</em></h1><p className="hero-intro">{copy.intro}</p></div>
       <BookingDialog done={bookingDone} onDone={handleBooking} onReset={() => setBookingDone(false)} triggerClass="book-visit" label={copy.visit} />
     </div></section>
@@ -128,19 +129,19 @@ export default function Home() {
     <section id="amenities" className="amenities-section section-pad"><div className="amenities-copy"><p className="eyebrow">{copy.amenitiesEyebrow}</p><h2>{copy.amenitiesTitle}</h2><p>{copy.amenitiesBody}</p></div><div className="amenity-list">{copy.amenityItems.map((item, index) => <div key={item}><span>0{index + 1}</span><strong>{item}</strong></div>)}</div></section>
 
     <section id="projects" className="projects-section section-pad" aria-labelledby="projects-title"><div className="projects-heading"><p className="eyebrow dark">{copy.projectsEyebrow}</p><h2 id="projects-title">{copy.projectsTitle}</h2></div><div className="project-grid">
-      <article id="avenue" className="project-card"><div className="project-image"><img src="/COMsitephoto.webp" alt="Completed City of Mara Avenue development" /></div><div className="project-copy"><p>{copy.avenueLabel}</p><h3>{copy.avenueTitle}</h3><div className="project-actions"><LuxuryLink href="#avenue" label={copy.project} /><LuxuryLink href={apartmentHref} label={copy.apartments} /></div></div></article>
-      <article id="forum" className="project-card"><div className="project-image"><img src="/COMfullrender.webp" alt="Architectural visualisation of City of Mara Forum" /></div><div className="project-copy"><p>{copy.forumLabel}</p><h3>{copy.forumTitle}</h3><div className="project-actions"><LuxuryLink href="#forum" label={copy.project} /><LuxuryLink href={apartmentHref} label={copy.apartments} /></div></div></article>
+      <article id="avenue" className="project-card"><div className="project-image"><img src="/COMsitephoto.webp" alt="Completed City of Mara Avenue development" /></div><div className="project-copy"><p>{copy.avenueLabel}</p><h3>{copy.avenueTitle}</h3><div className="project-actions"><LuxuryLink href="/avenue" label={copy.project} /><LuxuryLink href={apartmentHref} label={copy.apartments} /></div></div></article>
+      <article id="forum" className="project-card"><div className="project-image"><img src="/COMfullrender.webp" alt="Architectural visualisation of City of Mara Forum" /></div><div className="project-copy"><p>{copy.forumLabel}</p><h3>{copy.forumTitle}</h3><div className="project-actions"><LuxuryLink href="/forum" label={copy.project} /><LuxuryLink href={apartmentHref} label={copy.apartments} /></div></div></article>
     </div></section>
 
-    <section id="about" className="about-section"><div className="about-copy section-copy"><p className="eyebrow">{copy.aboutEyebrow}</p><h2>{copy.aboutTitle}</h2><p>{copy.aboutBody}</p><LuxuryLink href="#footer" label={copy.aboutLink} /></div><div className="about-media"><img src="/COMconversationrender.webp" alt="A City of Mara landscaped residential courtyard" /></div></section>
+    <section id="about" className="about-section"><div className="about-copy section-copy"><p className="eyebrow">{copy.aboutEyebrow}</p><h2>{copy.aboutTitle}</h2><p>{copy.aboutBody}</p><LuxuryLink href="/about" label={copy.aboutLink} /></div><div className="about-media"><img src="/COMconversationrender.webp" alt="A City of Mara landscaped residential courtyard" /></div></section>
 
-    <footer id="footer"><a href="#top"><img src="/COMlogogeneral.webp" alt="City of Mara" /></a><div><p>Avenue</p><span>Calea Circumvalațiunii no. 1</span><a href="tel:+40725890799">+40 725 890 799</a></div><div><p>Forum</p><span>Calea Aradului 33</span><a href="tel:+40371236806">0371 236 806</a></div><div className="footer-end"><a href="mailto:sales@cityofmara.ro">sales@cityofmara.ro</a><span>© 2026 City of Mara</span></div></footer>
+    <SiteFooter />
 
     <aside className="contact-dock" aria-label="Quick contact"><a href="tel:+40725890799"><Phone size={17} /><span>{copy.call}</span></a><a href="https://wa.me/40725890799"><MessageCircle size={17} /><span>WhatsApp</span></a><BookingDialog done={bookingDone} onDone={handleBooking} onReset={() => setBookingDone(false)} compact label={copy.book} /></aside>
 
     {menuOpen && <div id="site-menu" className={`menu-overlay${menuClosing ? " is-closing" : ""}`} role="dialog" aria-modal="true" aria-label="Main navigation">
       <button className="menu-trigger close" onClick={closeMenu}><X size={25} /> {copy.menu}</button><img className="overlay-logo" src="/COMlogogeneral.webp" alt="City of Mara" /><BookingDialog done={bookingDone} onDone={handleBooking} onReset={() => setBookingDone(false)} triggerClass="overlay-inquire" label={copy.visit} />
-      <div className="menu-image"><img key={menuImage} src={menuImage} alt="" /></div><nav><a href="#top" onMouseEnter={() => setMenuImage("/COMfullrender.webp")} onClick={closeMenu}><span>01</span>{copy.home}</a><MenuGroup number="02" label="Avenue" image="/COMsitephoto.webp" onImage={setMenuImage} projectLabel={copy.project} apartmentsLabel={copy.apartments} projectHref="#avenue" apartmentsHref={apartmentHref} onNavigate={closeMenu} /><MenuGroup number="03" label="Forum" image="/COMgardenrender.webp" onImage={setMenuImage} projectLabel={copy.project} apartmentsLabel={copy.apartments} projectHref="#forum" apartmentsHref={apartmentHref} onNavigate={closeMenu} /><a href="#about" onMouseEnter={() => setMenuImage("/COMconversationrender.webp")} onClick={closeMenu}><span>04</span>{copy.about}</a><a href="#footer" onMouseEnter={() => setMenuImage("/COMsite.webp")} onClick={closeMenu}><span>05</span>{copy.contact}</a></nav>
+      <div className="menu-image"><img key={menuImage} src={menuImage} alt="" /></div><nav><a href="#top" onMouseEnter={() => setMenuImage("/COMfullrender.webp")} onClick={closeMenu}><span>01</span>{copy.home}</a><MenuGroup number="02" label="Avenue" image="/COMsitephoto.webp" onImage={setMenuImage} projectLabel={copy.project} locationLabel={copy.location} apartmentsLabel={copy.apartments} projectHref="/avenue" locationHref="/avenue/location" apartmentsHref={apartmentHref} onNavigate={closeMenu} /><MenuGroup number="03" label="Forum" image="/COMgardenrender.webp" onImage={setMenuImage} projectLabel={copy.project} locationLabel={copy.location} apartmentsLabel={copy.apartments} projectHref="/forum" locationHref="/forum/location" apartmentsHref={apartmentHref} onNavigate={closeMenu} /><a href="/about" onMouseEnter={() => setMenuImage("/COMconversationrender.webp")} onClick={closeMenu}><span>04</span>{copy.about}</a><a href="/contact" onMouseEnter={() => setMenuImage("/COMsite.webp")} onClick={closeMenu}><span>05</span>{copy.contact}</a></nav>
       <div className="menu-bottom"><LanguageSwitch locale={locale} onChange={setLocale} overlay /><a href="tel:+40371236806">0371 236 806</a><span>Timișoara · Romania</span></div>
     </div>}
   </main>;
@@ -148,7 +149,7 @@ export default function Home() {
 
 function Metric({ value, suffix, label }: { value: number; suffix: string; label: string }) {
   const ref = useRef<HTMLDivElement>(null); const [display, setDisplay] = useState(0);
-  useEffect(() => { const node = ref.current; if (!node) return; const observer = new IntersectionObserver(([entry]) => { if (!entry.isIntersecting) return; const start = performance.now(); const tick = (now: number) => { const progress = Math.min(1, (now - start) / 1300); setDisplay(Math.round(value * (1 - Math.pow(1 - progress, 4)))); if (progress < 1) requestAnimationFrame(tick); }; requestAnimationFrame(tick); observer.disconnect(); }, { threshold: 0.35 }); observer.observe(node); return () => observer.disconnect(); }, [value]);
+  useEffect(() => { const node = ref.current; if (!node) return; const observer = new IntersectionObserver(([entry]) => { if (!entry.isIntersecting) return; const start = performance.now(); const tick = (now: number) => { const progress = Math.min(1, (now - start) / 1300); setDisplay(Math.round(value * (1 - Math.pow(1 - progress, 4)))); if (progress < 1) requestAnimationFrame(tick); }; requestAnimationFrame(tick); observer.disconnect(); }, { threshold: 0.08, rootMargin: "0px 0px -5% 0px" }); observer.observe(node); return () => observer.disconnect(); }, [value]);
   return <div ref={ref}><strong>{display}{suffix}</strong><span>{label}</span></div>;
 }
 
@@ -156,7 +157,7 @@ function LuxuryLink({ href, label, className = "" }: { href: string; label: stri
 
 function LanguageSwitch({ locale, onChange, overlay = false }: { locale: Locale; onChange: (locale: Locale) => void; overlay?: boolean }) { return <div className={overlay ? "overlay-languages" : "languages"} aria-label="Language">{(["EN", "RO"] as Locale[]).map((lang) => <button key={lang} className={locale === lang ? "active" : ""} onClick={() => onChange(lang)} aria-pressed={locale === lang}>{lang}</button>)}</div>; }
 
-function MenuGroup({ number, label, image, onImage, projectLabel, apartmentsLabel, projectHref, apartmentsHref, onNavigate }: { number: string; label: string; image: string; onImage: (image: string) => void; projectLabel: string; apartmentsLabel: string; projectHref: string; apartmentsHref: string; onNavigate: () => void }) { return <details className="menu-group" onMouseEnter={() => onImage(image)}><summary><span>{number}</span>{label}<Plus size={19} /></summary><div className="submenu"><a href={projectHref} onClick={onNavigate}>{projectLabel}</a><a href={apartmentsHref}>{apartmentsLabel}</a></div></details>; }
+function MenuGroup({ number, label, image, onImage, projectLabel, locationLabel, apartmentsLabel, projectHref, locationHref, apartmentsHref, onNavigate }: { number: string; label: string; image: string; onImage: (image: string) => void; projectLabel: string; locationLabel: string; apartmentsLabel: string; projectHref: string; locationHref: string; apartmentsHref: string; onNavigate: () => void }) { return <details className="menu-group" onMouseEnter={(event) => { onImage(image); event.currentTarget.open = true; }} onMouseLeave={(event) => { event.currentTarget.open = false; }}><summary><span>{number}</span>{label}<Plus size={19} /></summary><div className="submenu"><a href={projectHref} onClick={onNavigate}>{projectLabel}</a><a href={locationHref} onClick={onNavigate}>{locationLabel}</a><a href={apartmentsHref}>{apartmentsLabel}</a></div></details>; }
 
 function BookingDialog({ done, onDone, onReset, label, triggerClass = "", compact = false }: { done: boolean; onDone: (event: FormEvent<HTMLFormElement>) => void; onReset: () => void; label: string; triggerClass?: string; compact?: boolean }) {
   const trigger: ReactNode = compact ? <button className="dock-book"><CalendarDays size={17} /><span>{label}</span></button> : <button className={`luxury-action ${triggerClass || "visit-button"}`}><span className="action-label"><span>{label}</span><span aria-hidden="true">{label}</span></span><span className="action-arrow"><ArrowRight size={16} /><ArrowRight size={16} aria-hidden="true" /></span></button>;
