@@ -77,10 +77,16 @@ export default function Home() {
       }
       frame = requestAnimationFrame(render);
     };
+    const primeVideo = () => {
+      if (Number.isFinite(video.duration) && video.duration > 0 && video.currentTime === 0) {
+        video.currentTime = Math.min(0.01, video.duration);
+      }
+      measure();
+    };
     window.addEventListener("scroll", measure, { passive: true });
-    video.addEventListener("loadedmetadata", measure);
+    video.addEventListener("loadeddata", primeVideo);
     measure(); frame = requestAnimationFrame(render);
-    return () => { window.removeEventListener("scroll", measure); video.removeEventListener("loadedmetadata", measure); cancelAnimationFrame(frame); };
+    return () => { window.removeEventListener("scroll", measure); video.removeEventListener("loadeddata", primeVideo); cancelAnimationFrame(frame); };
   }, []);
 
   useEffect(() => {
@@ -110,7 +116,7 @@ export default function Home() {
     </header>
 
     <section ref={heroRef} className="hero-scroll" aria-labelledby="hero-title"><div className="hero-stage">
-      <video ref={videoRef} className="hero-video" muted playsInline preload="metadata" poster="/COMconversationrender.webp" aria-hidden="true"><source src="/frame_0001-0241.mp4" type="video/mp4" /></video><div className="hero-veil" />
+      <video ref={videoRef} className="hero-video" muted playsInline preload="auto" poster="/COMconversationrender.webp" aria-hidden="true"><source src="/frame_0001-0241.mp4" type="video/mp4" /></video><div className="hero-veil" />
       <div className="hero-copy"><p className="eyebrow">{copy.eyebrow}</p><h1 id="hero-title">{copy.titleA}<br /><em>{copy.titleB}</em></h1><p className="hero-intro">{copy.intro}</p></div>
       <BookingDialog done={bookingDone} onDone={handleBooking} onReset={() => setBookingDone(false)} triggerClass="book-visit" label={copy.visit} />
     </div></section>
