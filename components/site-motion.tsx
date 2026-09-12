@@ -8,16 +8,16 @@ export default function SiteMotion() {
 
   useEffect(() => {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let lastY = window.scrollY, ticking = false;
+    let lastY = window.scrollY, ticking = false, hasScrolled = window.scrollY > 0;
     const update = () => {
       const y = window.scrollY;
+      if (y > 0) hasScrolled = true;
       const header = document.querySelector<HTMLElement>(".site-header, .inner-site-header");
       const hero = document.querySelector<HTMLElement>(".hero-scroll, .development-hero, .location-hero, .about-hero");
       const heroStage = document.querySelector<HTMLElement>(".hero-stage");
       heroStage?.classList.toggle("hero-interacted", y > 10);
       if (header) {
-        const heroBottom = hero ? hero.getBoundingClientRect().bottom : 0;
-        header.classList.toggle("nav-solid", heroBottom <= header.offsetHeight + 8);
+        header.classList.toggle("nav-solid", hasScrolled);
         header.classList.toggle("nav-scrolled", y > 8);
         if (y > lastY + 5 && y > 120) header.classList.add("nav-hidden");
         if (y < lastY - 4 || y < 80) header.classList.remove("nav-hidden");
@@ -28,7 +28,7 @@ export default function SiteMotion() {
         const progress = Math.max(0, Math.min(section.offsetHeight, -section.getBoundingClientRect().top));
         media.style.setProperty("--parallax-y", `${-Math.min(150, progress * .22)}px`);
       });
-      document.querySelectorAll<HTMLElement>(".motion-title:not(.is-entered), .motion-blur:not(.is-entered), .motion-image:not(.is-entered)").forEach((element) => {
+      document.querySelectorAll<HTMLElement>(".motion-title:not(.is-entered), .motion-blur:not(.is-entered), .motion-image:not(.is-entered), .motion-image-frame:not(.is-entered)").forEach((element) => {
         const bounds = element.getBoundingClientRect();
         if (bounds.top < window.innerHeight * .95 && bounds.bottom > 0) element.classList.add("is-entered");
       });
@@ -58,7 +58,7 @@ export default function SiteMotion() {
           title.style.setProperty("--motion-delay", `${index * 90}ms`);
           observeEntrance(title);
         });
-        section.querySelectorAll<HTMLElement>("p, a, button, figcaption, [data-motion-copy]").forEach((item, index) => {
+        section.querySelectorAll<HTMLElement>("p:not(.blur-lines), a, button, figcaption, [data-motion-copy]:not(.blur-lines)").forEach((item, index) => {
           if (item.closest(".rail-card")) return;
           item.classList.add("motion-blur");
           item.style.setProperty("--motion-delay", `${Math.min(index, 5) * 75 + 120}ms`);
@@ -66,11 +66,12 @@ export default function SiteMotion() {
         });
       }
       section.querySelectorAll<HTMLImageElement>("img").forEach((item, index) => {
-        if (item.closest(".wipe-image, .rail-card")) return;
+        if (item.closest(".wipe-image, .amenity-image-stage")) return;
         item.classList.add("motion-image");
         item.style.setProperty("--image-delay", `${Math.min(index, 5) * 140}ms`);
         observeEntrance(item);
       });
+      section.querySelectorAll<HTMLElement>(".motion-image-frame").forEach(observeEntrance);
     });
 
     update(); window.addEventListener("scroll", onScroll, { passive: true });

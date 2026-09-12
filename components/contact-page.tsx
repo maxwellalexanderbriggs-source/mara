@@ -2,6 +2,7 @@
 
 import { ArrowRight } from "lucide-react";
 import { FormEvent, useState } from "react";
+import { BlurLines, MotionHeading } from "@/components/motion-text";
 import ProjectNavigation from "@/components/project-navigation";
 import SiteFooter from "@/components/site-footer";
 
@@ -30,10 +31,10 @@ export default function ContactPageClient() {
     <ProjectNavigation locale={locale} onLocale={setLocale} mark="/COMlogogeneral.webp" name="Contact" />
     <section className="contact-layout">
       <div className="contact-details">
-        <p className="contact-eyebrow">{text.eyebrow}</p><h1>{text.title}</h1><p className="contact-intro">{text.intro}</p>
+        <p className="contact-eyebrow">{text.eyebrow}</p><MotionHeading as="h1" text={text.title} /><BlurLines className="contact-intro" text={text.intro} />
         <div className="contact-offices">
-          <article><span>01</span><h2>{text.avenue}</h2><p>Calea Circumvalațiunii 1<br />Timișoara, Romania</p><a href="tel:+40725890799">+40 725 890 799</a><a href="mailto:sales@cityofmara.ro">sales@cityofmara.ro</a></article>
-          <article><span>02</span><h2>{text.forum}</h2><p>Calea Aradului 33<br />Timișoara, Romania</p><a href="tel:+40371236806">0371 236 806</a><a href="mailto:forum@cityofmara.ro">forum@cityofmara.ro</a></article>
+          <article><span>01</span><MotionHeading as="h2" text={text.avenue} /><BlurLines lines={["Calea Circumvalațiunii 1", "Timișoara, Romania"]} /><a href="tel:+40725890799">+40 725 890 799</a><a href="mailto:sales@cityofmara.ro">sales@cityofmara.ro</a></article>
+          <article><span>02</span><MotionHeading as="h2" text={text.forum} /><BlurLines lines={["Calea Aradului 33", "Timișoara, Romania"]} /><a href="tel:+40371236806">0371 236 806</a><a href="mailto:forum@cityofmara.ro">forum@cityofmara.ro</a></article>
         </div>
       </div>
       <form className="contact-form" onSubmit={submit}>

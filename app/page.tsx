@@ -3,6 +3,7 @@
 import { FormEvent, ReactNode, useEffect, useRef, useState } from "react";
 import { ArrowRight, CalendarDays, Check, ChevronDown, MessageCircle, Phone, Plus, X } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { BlurLines, MotionHeading } from "@/components/motion-text";
 import SiteFooter from "@/components/site-footer";
 
 type Locale = "EN" | "RO";
@@ -48,6 +49,7 @@ const translations = {
 
 const metricValues = [10, 700, 13, 2];
 const metricSuffixes = ["+", "", "+", ""];
+const amenityImages = ["/COMgardenrender.webp", "/COMlifestylerender.webp", "/COMintimaterender.webp", "/COMbuildingrender.webp"];
 
 export default function Home() {
   const [locale, setLocale] = useState<Locale>("EN");
@@ -118,22 +120,25 @@ export default function Home() {
 
     <section ref={heroRef} className="hero-scroll" aria-labelledby="hero-title"><div className="hero-stage">
       <div className="hero-video-frame" data-parallax><video ref={videoRef} className="hero-video" muted playsInline preload="auto" poster="/COMconversationrender.webp" aria-hidden="true"><source src="/frame_0001-0241.mp4" type="video/mp4" /></video></div><div className="hero-veil" />
-      <div className="hero-copy"><p className="eyebrow">{copy.eyebrow}</p><h1 id="hero-title">{copy.titleA}<br /><em>{copy.titleB}</em></h1><p className="hero-intro">{copy.intro}</p></div>
+      <div className="hero-copy"><p className="eyebrow">{copy.eyebrow}</p><MotionHeading as="h1" id="hero-title" className="hero-title" lines={[copy.titleA, copy.titleB]} /><BlurLines className="hero-intro" text={copy.intro} /></div>
       <BookingDialog done={bookingDone} onDone={handleBooking} onReset={() => setBookingDone(false)} triggerClass="book-visit" label={copy.visit} />
     </div></section>
 
-    <section className="intro-proof section-pad" aria-labelledby="intro-title"><div className="intro-grid"><p className="eyebrow dark">{copy.storyEyebrow}</p><h2 id="intro-title">{copy.storyTitle}</h2><p className="lead-copy">{copy.storyBody}</p></div><div className="proof-grid">{metricValues.map((value, index) => <Metric key={value} value={value} suffix={metricSuffixes[index]} label={copy.metrics[index]} />)}</div></section>
+    <section className="intro-proof section-pad" aria-labelledby="intro-title"><div className="intro-grid"><p className="eyebrow dark">{copy.storyEyebrow}</p><MotionHeading as="h2" id="intro-title" className="intro-title" lines={locale === "EN" ? ["A better part of the city,", "built around everyday", "life."] : ["O parte mai bună a orașului,", "construită în jurul vieții", "de zi cu zi."]} /><BlurLines className="lead-copy" text={copy.storyBody} /></div><div className="proof-grid">{metricValues.map((value, index) => <Metric key={value} value={value} suffix={metricSuffixes[index]} label={copy.metrics[index]} />)}</div></section>
 
-    <section id="location" className="location-section"><div className="location-media"><img src="/COMsite.webp" alt="City of Mara in central Timișoara" /></div><div className="location-copy section-copy"><p className="eyebrow dark">{copy.locationEyebrow}</p><h2>{copy.locationTitle}</h2><p>{copy.locationBody}</p><div className="location-note"><span>45°45&apos;N</span><i /><span>21°13&apos;E</span></div></div></section>
-
-    <section id="amenities" className="amenities-section section-pad"><div className="amenities-copy"><p className="eyebrow">{copy.amenitiesEyebrow}</p><h2>{copy.amenitiesTitle}</h2><p>{copy.amenitiesBody}</p></div><div className="amenity-list">{copy.amenityItems.map((item, index) => <div key={item}><span>0{index + 1}</span><strong>{item}</strong></div>)}</div></section>
-
-    <section id="projects" className="projects-section section-pad" aria-labelledby="projects-title"><div className="projects-heading"><p className="eyebrow dark">{copy.projectsEyebrow}</p><h2 id="projects-title">{copy.projectsTitle}</h2></div><div className="project-grid">
-      <article id="avenue" className="project-card"><div className="project-image"><img src="/COMsitephoto.webp" alt="Completed City of Mara Avenue development" /></div><div className="project-copy"><p>{copy.avenueLabel}</p><h3>{copy.avenueTitle}</h3><div className="project-actions"><LuxuryLink href="/avenue" label={copy.project} /><LuxuryLink href={apartmentHref} label={copy.apartments} /></div></div></article>
-      <article id="forum" className="project-card"><div className="project-image"><img src="/COMfullrender.webp" alt="Architectural visualisation of City of Mara Forum" /></div><div className="project-copy"><p>{copy.forumLabel}</p><h3>{copy.forumTitle}</h3><div className="project-actions"><LuxuryLink href="/forum" label={copy.project} /><LuxuryLink href={apartmentHref} label={copy.apartments} /></div></div></article>
+    <section id="projects" className="projects-section section-pad" aria-labelledby="projects-title"><div className="projects-heading"><p className="eyebrow dark">{copy.projectsEyebrow}</p><MotionHeading as="h2" id="projects-title" lines={locale === "EN" ? ["Choose your", "City of Mara."] : ["Alege", "City of Mara."]} /></div><div className="project-grid">
+      <article id="avenue" className="project-card"><div className="project-image"><img src="/COMsitephoto.webp" alt="Completed City of Mara Avenue development" /></div><div className="project-copy"><p>{copy.avenueLabel}</p><MotionHeading as="h3" text={copy.avenueTitle} /><div className="project-actions"><LuxuryLink href="/avenue" label={copy.project} /><LuxuryLink href={apartmentHref} label={copy.apartments} /></div></div></article>
+      <article id="forum" className="project-card"><div className="project-image"><img src="/COMfullrender.webp" alt="Architectural visualisation of City of Mara Forum" /></div><div className="project-copy"><p>{copy.forumLabel}</p><MotionHeading as="h3" text={copy.forumTitle} /><div className="project-actions"><LuxuryLink href="/forum" label={copy.project} /><LuxuryLink href={apartmentHref} label={copy.apartments} /></div></div></article>
     </div></section>
 
-    <section id="about" className="about-section"><div className="about-copy section-copy"><p className="eyebrow">{copy.aboutEyebrow}</p><h2>{copy.aboutTitle}</h2><p>{copy.aboutBody}</p><LuxuryLink href="/about" label={copy.aboutLink} /></div><div className="about-media"><img src="/COMconversationrender.webp" alt="A City of Mara landscaped residential courtyard" /></div></section>
+    <AmenitiesStory locale={locale} eyebrow={copy.amenitiesEyebrow} title={copy.amenitiesTitle} body={copy.amenitiesBody} items={copy.amenityItems} />
+
+    <section className="news-teaser" aria-labelledby="news-teaser-title">
+      <div><p className="eyebrow dark">News &amp; progress</p><MotionHeading as="h2" id="news-teaser-title" lines={["Follow what’s", "taking shape."]} /></div>
+      <div><BlurLines text="Find out about project milestones, neighbourhood updates and how Avenue and Forum are progressing." /><LuxuryLink href="/news" label="View the latest news" /></div>
+    </section>
+
+    <section id="about" className="about-section"><div className="about-copy section-copy"><p className="eyebrow">{copy.aboutEyebrow}</p><MotionHeading as="h2" text={copy.aboutTitle} /><BlurLines text={copy.aboutBody} /><LuxuryLink href="/about" label={copy.aboutLink} /></div><div className="about-media"><img src="/COMconversationrender.webp" alt="A City of Mara landscaped residential courtyard" /></div></section>
 
     <SiteFooter />
 
@@ -145,6 +150,32 @@ export default function Home() {
       <div className="menu-bottom"><LanguageSwitch locale={locale} onChange={setLocale} overlay /><a href="tel:+40371236806">0371 236 806</a><span>Timișoara · Romania</span></div>
     </div>}
   </main>;
+}
+
+function AmenitiesStory({ locale, eyebrow, title, body, items }: { locale: Locale; eyebrow: string; title: string; body: string; items: string[] }) {
+  const [active, setActive] = useState(0);
+  const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (visible) setActive(Number((visible.target as HTMLElement).dataset.index));
+    }, { threshold: [0, .25, .5, .75, 1], rootMargin: "-36% 0px -36% 0px" });
+    itemRefs.current.forEach((item) => item && observer.observe(item));
+    return () => observer.disconnect();
+  }, []);
+
+  return <section id="amenities" className="amenities-story">
+    <div className="amenities-left">
+      <div className="amenities-intro">
+        <p className="eyebrow">{eyebrow}</p>
+        <MotionHeading as="h2" lines={locale === "EN" ? ["A neighbourhood that works", "before you leave home."] : ["Un cartier care funcționează", "înainte să pleci de acasă."]} />
+        <BlurLines text={body} />
+      </div>
+      <div className="amenity-scroll-list">{items.map((item, index) => <div ref={(node) => { itemRefs.current[index] = node; }} data-index={index} className={active === index ? "is-active" : ""} key={item}><span>0{index + 1}</span><strong>{item}</strong><img className="amenity-mobile-image" src={amenityImages[index]} alt={item} /></div>)}</div>
+    </div>
+    <div className="amenities-visual"><div className="amenity-image-stage motion-image-frame">{amenityImages.map((image, index) => <img key={image} className={active === index ? "is-active" : ""} src={image} alt={items[index]} />)}</div></div>
+  </section>;
 }
 
 function Metric({ value, suffix, label }: { value: number; suffix: string; label: string }) {

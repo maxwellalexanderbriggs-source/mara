@@ -2,6 +2,7 @@
 
 import { ArrowRight } from "lucide-react";
 import { useState } from "react";
+import { BlurLines, MotionHeading } from "@/components/motion-text";
 import ProjectNavigation from "@/components/project-navigation";
 import SiteFooter from "@/components/site-footer";
 
@@ -41,10 +42,10 @@ export default function AboutPageClient() {
   const copy = content[locale];
   return <main id="top" className="about-page">
     <ProjectNavigation locale={locale} onLocale={setLocale} mark="/COMlogogeneral.webp" name="About" />
-    <section className="about-hero"><img src="/photo-1687696162053-0358eea87c8b.avif" alt="Timișoara skyline" data-parallax /><div /><div className="about-hero-copy"><p>{copy.eyebrow}</p><h1>{copy.title}</h1><span>{copy.hero}</span></div></section>
-    <section className="about-philosophy"><div className="about-philosophy-copy"><p>{copy.introEyebrow}</p><h2>{copy.introTitle}</h2><span data-motion-copy>{copy.introBody}</span><a href="/#projects">{copy.introLink}<ArrowRight size={17} /></a></div><div className="about-philosophy-image"><img src="/COMconversationrender.webp" alt="Life in a City of Mara courtyard" /></div></section>
-    <section className="about-values"><div className="about-values-heading"><div><p>{copy.valuesEyebrow}</p><h2>{copy.valuesTitle}</h2></div><a href="mailto:sales@cityofmara.ro">{locale === "RO" ? "Contact" : "Contact us"}<ArrowRight size={16} /></a></div><div className="about-values-grid">{copy.values.map((value, index) => <article key={value.title}><div><img src={valueImages[index]} alt="" /></div><span>0{index + 1}</span><h3>{value.title}</h3><p>{value.body}</p></article>)}</div></section>
-    <section className="about-foundation"><div className="about-foundation-image"><img src="/photo-1590690104484-1070f9fc3eaa.avif" alt="Young people learning together" /></div><div className="about-foundation-copy"><p>{copy.foundationEyebrow}</p><h2>{copy.foundationTitle}</h2><span data-motion-copy>{copy.foundationBody}</span><a href={locale === "RO" ? "https://www.cityofmara.ro/fundatia-alber/" : "https://www.cityofmara.ro/en/alber-foundation/"}>{copy.foundationLink}<ArrowRight size={17} /></a></div></section>
+    <section className="about-hero"><img src="/photo-1687696162053-0358eea87c8b.avif" alt="Timișoara skyline" data-parallax /><div /><div className="about-hero-copy"><p>{copy.eyebrow}</p><MotionHeading as="h1" text={copy.title} /><BlurLines as="span" text={copy.hero} /></div></section>
+    <section className="about-philosophy"><div className="about-philosophy-copy"><p>{copy.introEyebrow}</p><MotionHeading as="h2" text={copy.introTitle} /><BlurLines as="span" text={copy.introBody} /><a href="/#projects">{copy.introLink}<ArrowRight size={17} /></a></div><div className="about-philosophy-image"><img src="/COMconversationrender.webp" alt="Life in a City of Mara courtyard" /></div></section>
+    <section className="about-values"><div className="about-values-heading"><div><p>{copy.valuesEyebrow}</p><MotionHeading as="h2" text={copy.valuesTitle} /></div><a href="mailto:sales@cityofmara.ro">{locale === "RO" ? "Contact" : "Contact us"}<ArrowRight size={16} /></a></div><div className="about-values-grid">{copy.values.map((value, index) => <article key={value.title}><div><img src={valueImages[index]} alt="" /></div><span>0{index + 1}</span><MotionHeading as="h3" text={value.title} /><BlurLines text={value.body} /></article>)}</div></section>
+    <section className="about-foundation"><div className="about-foundation-image"><img src="/photo-1590690104484-1070f9fc3eaa.avif" alt="Young people learning together" /></div><div className="about-foundation-copy"><p>{copy.foundationEyebrow}</p><MotionHeading as="h2" text={copy.foundationTitle} /><BlurLines as="span" text={copy.foundationBody} /><a href={locale === "RO" ? "https://www.cityofmara.ro/fundatia-alber/" : "https://www.cityofmara.ro/en/alber-foundation/"}>{copy.foundationLink}<ArrowRight size={17} /></a></div></section>
     <SiteFooter />
   </main>;
 }

@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { ElementType, useEffect, useRef, useState } from "react";
 import ProjectNavigation from "@/components/project-navigation";
+import { BlurLines } from "@/components/motion-text";
 import SiteFooter from "@/components/site-footer";
 
 type Locale = "EN" | "RO";
@@ -65,7 +66,7 @@ export default function DevelopmentPage({ config }: { config: DevelopmentConfig 
         <div className="development-hero-copy">
           <p className="eyebrow">{copy.eyebrow}</p>
           <RiseHeading as="h1" lines={copy.title} />
-          <p>{copy.intro}</p>
+          <BlurLines text={copy.intro} />
         </div>
         <nav className="development-anchor-nav" aria-label="On this page">
           <a href="#introduction">{ui.project}</a><Link href={`/${config.slug}/location`}>{ui.location}</Link><a href="#amenities">{ui.amenities}</a>
@@ -76,7 +77,7 @@ export default function DevelopmentPage({ config }: { config: DevelopmentConfig 
         <p className="eyebrow dark">{copy.introductionEyebrow}</p>
         <RiseHeading as="h2" lines={copy.introductionTitle} />
         <div className="development-intro-body">
-          <p>{copy.introductionBody}</p>
+          <BlurLines text={copy.introductionBody} />
           <a className="editorial-link" href={apartmentLinks[locale]}><RollingLabel label={ui.explore} /><ArrowRight size={17} /></a>
         </div>
       </section>
@@ -105,10 +106,10 @@ export default function DevelopmentPage({ config }: { config: DevelopmentConfig 
 
 function StorySection({ id, eyebrow, title, body, stories, dark = false }: { id: string; eyebrow: string; title: string[]; body: string; stories: Story[]; dark?: boolean }) {
   return <section id={id} className={`development-story${dark ? " story-dark" : ""}`}>
-    <div className="story-left"><div className="story-sticky"><p className="eyebrow">{eyebrow}</p><RiseHeading as="h2" lines={title} /><p className="story-intro">{body}</p></div></div>
+    <div className="story-left"><div className="story-sticky"><p className="eyebrow">{eyebrow}</p><RiseHeading as="h2" lines={title} /><BlurLines className="story-intro" text={body} /></div></div>
     <div className="story-feed">{stories.map((story, index) => <article className="story-card" key={`${story.title}-${index}`}>
       <RevealImage src={story.image} alt={story.alt} />
-      <div className="story-card-copy"><span>0{index + 1}</span><div><p>{story.eyebrow}</p><RiseHeading as="h3" lines={[story.title]} /><p className="story-body">{story.body}</p></div></div>
+      <div className="story-card-copy"><span>0{index + 1}</span><div><p>{story.eyebrow}</p><RiseHeading as="h3" lines={[story.title]} /><BlurLines className="story-body" text={story.body} /></div></div>
     </article>)}</div>
   </section>;
 }

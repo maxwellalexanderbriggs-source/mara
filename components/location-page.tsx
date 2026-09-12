@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLayoutEffect, useRef, useState } from "react";
+import { BlurLines, MotionHeading } from "@/components/motion-text";
 import ProjectNavigation from "@/components/project-navigation";
 import SiteFooter from "@/components/site-footer";
 
@@ -81,11 +82,11 @@ export default function LocationPage({ config }: { config: LocationConfig }) {
     <section className="location-hero">
       <img src={config.hero} alt={`${config.slug} location`} data-parallax />
       <div className="location-hero-shade" />
-      <div><p>{copy.eyebrow}</p><h1>{copy.title}</h1><span>{copy.intro}</span></div>
+      <div><p>{copy.eyebrow}</p><MotionHeading as="h1" text={copy.title} /><BlurLines as="span" text={copy.intro} /></div>
     </section>
 
     <section className="location-statement">
-      <p>{copy.eyebrow}</p><h2>{copy.statement}</h2>
+      <p>{copy.eyebrow}</p><MotionHeading as="h2" text={copy.statement} />
     </section>
 
     <section className="location-image-pair">
@@ -95,7 +96,7 @@ export default function LocationPage({ config }: { config: LocationConfig }) {
 
     <section id="location-highlights" ref={railRef} className="location-rail">
       <div className="location-rail-stage">
-        <div className="rail-heading"><p>{copy.carouselEyebrow}</p><h2>{copy.carouselTitle}</h2></div>
+        <div className="rail-heading"><p>{copy.carouselEyebrow}</p><MotionHeading as="h2" text={copy.carouselTitle} /></div>
         <div ref={trackRef} className="rail-track" aria-label="Location advantages">{copy.features.map((feature, index) => <article ref={(node) => { cardsRef.current[index] = node; }} className="rail-card" key={feature.title}>
           <img src={feature.image} alt="" /><div className="rail-card-shade" /><div><span>0{index + 1} · {feature.eyebrow}</span><h3>{feature.title}</h3></div>
         </article>)}</div>
@@ -104,7 +105,7 @@ export default function LocationPage({ config }: { config: LocationConfig }) {
     </section>
 
     <section id="inquire" className="location-cta">
-      <p>{copy.ctaEyebrow}</p><h2>{copy.ctaTitle}</h2><span>{copy.ctaBody}</span>
+      <p>{copy.ctaEyebrow}</p><MotionHeading as="h2" text={copy.ctaTitle} /><BlurLines as="span" text={copy.ctaBody} />
       <div><a href={apartments}>{locale === "RO" ? "Vezi apartamentele" : "View apartments"}<ArrowRight size={17} /></a><a href="tel:+40371236806">{locale === "RO" ? "Programează o vizită" : "Book a visit"}<ArrowRight size={17} /></a></div>
     </section>
 
